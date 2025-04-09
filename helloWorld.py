@@ -1,4 +1,5 @@
 import requests
+from city import City
 
 def get_cities(coordinates, username):
     lat = float(coordinates[0])
@@ -20,7 +21,14 @@ def get_cities(coordinates, username):
         i = 0
         cities = []
         for city in geonames:
-            cities.append(city["name"])
+            name = city["name"]
+            country = city["countrycode"]
+            pop = city["population"]
+            lat = city["lat"]
+            lng = city["lng"]
+            geoname = city["geonameId"]
+            newCity = City(name = name, country = country, population = pop, latitude = lat, longitude = lng, geoname_id = geoname)
+            cities.append(newCity)
         return cities
 
     return []
@@ -43,6 +51,6 @@ if __name__ == "__main__":
     coordinates = get_coordinates(city, username)
     cities = get_cities(coordinates, username)
 
-    for i, city_name in enumerate(cities, 1):
-            print(f"{i}. {city_name}")
+    for city in cities:
+	    print(city.summary())
 
